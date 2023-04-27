@@ -18,6 +18,11 @@ export class Renderer
 
     public init(): void {
         gl.clearColor(0.0, 0.0, 0.0, 1.0);
+        gl.cullFace(gl.BACK);
+        gl.frontFace(gl.CCW);
+        gl.enable(gl.CULL_FACE);
+        gl.enable(gl.DEPTH_TEST);
+
         this._shader.create("default.vert.glsl", "default.frag.glsl");
         console.log("Renderer Init");
     }
