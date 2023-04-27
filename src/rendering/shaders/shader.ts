@@ -1,3 +1,4 @@
+import { mat4 } from "gl-matrix";
 import { Loader } from "../../utils/loader";
 import { gl } from "../renderer";
 
@@ -71,7 +72,7 @@ export class Shader {
         return gl.getUniformLocation(this._program, uniform);
     }
 
-    public setUniform(uniform: string, type: string, value: Int32Array | Float32Array | number): void
+    public setUniform(uniform: string, type: string, value: Int32Array | Float32Array | number | mat4): void
     {
         let location: WebGLUniformLocation | null = this.getUniformLocation(uniform);
         switch(type)

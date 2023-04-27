@@ -3,6 +3,8 @@ import { Renderer } from "./rendering/renderer";
 
 export class VisArch{
     private _renderer: Renderer;
+    
+    private _mesh: Mesh = new Mesh();
 
     public constructor() {
         this._renderer = new Renderer("render-context");
@@ -11,17 +13,26 @@ export class VisArch{
     public init(): void {
         this._renderer.init();
 
-        let mesh = new Mesh(
+        this._mesh.load(
             // x     y    z     r    g    b
-            [ -0.5, -0.5, 0.0,  1.0, 1.0, 0.0,
-               0.5, -0.5, 0.0,  0.0, 1.0, 1.0,
-               0.0,  0.5, 0.0,  1.0, 0.0, 1.0   ],
+            [ -0.5, -0.5, 0.5,  1.0, 1.0, 0.0,
+                0.5, -0.5, 0.5,  0.0, 1.0, 1.0,
+                0.5,  0.5, 0.5,  1.0, 0.0, 1.0,
+                -0.5,  0.5, 0.5,  1.0, 1.0, 1.0,
+                -0.5, -0.5, -0.5,  1.0, 1.0, 0.0,
+                0.5, -0.5, -0.5,  0.0, 1.0, 1.0,
+                0.5,  0.5, -0.5,  1.0, 0.0, 1.0,
+                -0.5,  0.5, -0.5,  1.0, 1.0, 1.0   ],
             // Indices
-            [ 0, 1, 2 ]
+            [ 0, 1, 2, 2, 3, 0,
+                1, 5, 6, 6, 2, 1,
+                7, 6, 5, 5, 4, 7,
+                4, 0, 3, 3, 7, 4,
+                4, 5, 1, 1, 0, 4,
+                3, 2, 6, 6, 7, 3 ]
         );
 
-        this._renderer.setMesh(mesh);
-
+        this._mesh.scale = [0.5, 0.5, 0.5];
         this.update();
     }
 
@@ -30,7 +41,12 @@ export class VisArch{
     }
 
     private update(): void {
-        this._renderer.draw();
+        this._mesh.position[0] += Math.sin(Date.now() / 1000) / 500;
+        this._mesh.position[1] += Math.cos(Date.now() / 1000) / 500;
+
+        this._mesh.rotation[1] += 0.01;
+    
+        this._renderer.draw(this._mesh);
         requestAnimationFrame(this.update.bind( this ));
     }
 }

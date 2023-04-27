@@ -4,23 +4,38 @@ import { IndexBuffer } from "./buffers/indexBuffer";
 import { gl } from "./renderer";
 import { VertexArray } from "./buffers/vertexArray";
 import { VertexBufferLayout } from "./buffers/vertexBufferLayout";
+import { vec3 } from "gl-matrix";
+import { Transform } from "./transform";
 
 export class Mesh
 {
-    protected _vertices: number[];
-    protected _indices: number[] | null;
+    public position: vec3 = vec3.create();
+	public rotation: vec3 = vec3.create();
+	public scale: vec3	  = vec3.fromValues(1, 1, 1);
 
-    protected _vertexArray!: VertexArray;
-    protected _vertexBuffer!: VertexBuffer;
-    protected _indexBuffer!: IndexBuffer;
+    public transform: Transform = new Transform();
+
+    private _vertices: number[] = [];
+    private _indices: number[] | null = null;
+
+    private _vertexArray!: VertexArray;
+    private _vertexBuffer!: VertexBuffer;
+    private _indexBuffer!: IndexBuffer;
     
-    public constructor(vertices: number[], indices: number[] | null = null)
+    public constructor() {}
+
+    public update(): void
     {
-        this._vertices = vertices;
-        this._indices = indices;
+        this.transform.position = this.position;
+        this.transform.eulerRotation = this.rotation;
+        this.transform.scale = this.scale;
+        this.transform.computeModelMatrix();
     }
 
-    public load(): void { 
+    public load(vertices: number[], indices: number[] | null = null): void { 
+        this._vertices = vertices;
+        this._indices = indices;
+
         this._vertexArray = new VertexArray();
 
         this._vertexBuffer = new VertexBuffer(6, gl.FLOAT, gl.TRIANGLES);
@@ -60,5 +75,10 @@ export class Mesh
         }
         else
             this._vertexBuffer.draw();
+
+        this._vertexBuffer.unbind();
+        if(this._indices)
+            this._indexBuffer.unbind();
+        this._vertexArray.unbind();
     }
 }

@@ -8,7 +8,6 @@ export class Renderer
     private _canvas: HTMLCanvasElement;
 
     private _shader: Shader;
-    private _mesh: Mesh | null = null;
 
     public constructor(canvasID: string) {
         this._canvas = <HTMLCanvasElement>document.getElementById(canvasID);
@@ -27,15 +26,12 @@ export class Renderer
         console.log("Resize");
     }
 
-    public setMesh(mesh: Mesh): void {
-        this._mesh = mesh;
-        this._mesh.load();
-    }
-
-    public draw(): void {
+    public draw(mesh: Mesh): void {
         gl.clear(gl.COLOR_BUFFER_BIT);
+        mesh.update();
         this._shader.use();
-        this._mesh?.draw();
+        this._shader.setUniform("u_model", 'Matrix4fv', mesh.transform.modelMatrix);
+        mesh.draw();
     }
 
 }
