@@ -6,7 +6,7 @@ export class VisArch{
     private _renderer: Renderer;
     
     private _mesh: Mesh = new Mesh();
-    private _camera: Camera = new Camera();
+    private _camera: Camera = new Camera(800, 600, 45);
 
     public constructor() {
         this._renderer = new Renderer("render-context");
@@ -36,11 +36,13 @@ export class VisArch{
 
         this._mesh.scale = [0.5, 0.5, 0.5];
         this._camera.position = [0, 1, 2];
+
+        this.resize();
         this.update();
     }
 
     public resize(): void {
-        this._renderer.resize();
+        this._renderer.resize(true, this._camera);
     }
 
     private update(): void {

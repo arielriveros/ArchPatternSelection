@@ -9,14 +9,19 @@ export class Camera
     public rotation = vec3.create();
 
     private _fov: number = 45;
-    private _aspectRatio: number = 1;
+    private _aspect: number = 1;
     private _near: number = 0.1;
     private _far: number = 100;
 
-    constructor() {}
+    constructor(width: number, height: number, fov: number, near: number = 0.1, far: number = 100) {
+        this._fov = fov;
+        this._aspect = width / height;
+        this._near = near;
+        this._far = far;
+    }
 
     private getProjectionMatrix(): mat4 {
-        return mat4.perspective(this._projectionMatrix, this._fov * (Math.PI / 180), this._aspectRatio, this._near, this._far);
+        return mat4.perspective(this._projectionMatrix, this._fov * (Math.PI / 180), this._aspect, this._near, this._far);
     }
 
     private getViewMatrix(): mat4 {
@@ -27,5 +32,9 @@ export class Camera
         let projectionViewMatrix = mat4.create();
         mat4.multiply(projectionViewMatrix, this.getProjectionMatrix(), this.getViewMatrix());
         return projectionViewMatrix;
+    }
+
+    public onResize(width: number, height: number): void {
+        this._aspect = width / height;
     }
 }

@@ -28,7 +28,15 @@ export class Renderer
         console.log("Renderer Init");
     }
 
-    public resize(): void { 
+    public resize(fullscreen: boolean = false, camera: Camera | null = null): void { 
+        if(fullscreen) {
+            this._canvas.width = window.innerWidth;
+            this._canvas.height = window.innerHeight;
+            gl.viewport(0, 0, this._canvas.width, this._canvas.height);
+        }
+        if(camera != null) {
+            camera.onResize(this._canvas.width, this._canvas.height);
+        }
         console.log("Resize");
     }
 
