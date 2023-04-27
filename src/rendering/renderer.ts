@@ -1,3 +1,4 @@
+import { Camera } from "./camera";
 import { Mesh } from "./mesh";
 import { Shader } from "./shaders/shader";
 
@@ -31,11 +32,12 @@ export class Renderer
         console.log("Resize");
     }
 
-    public draw(mesh: Mesh): void {
+    public draw(mesh: Mesh, camera: Camera): void {
         gl.clear(gl.COLOR_BUFFER_BIT);
         mesh.update();
         this._shader.use();
         this._shader.setUniform("u_model", 'Matrix4fv', mesh.transform.modelMatrix);
+        this._shader.setUniform("u_viewProjection", 'Matrix4fv', camera.getProjectionViewMatrix());
         mesh.draw();
     }
 

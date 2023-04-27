@@ -1,3 +1,4 @@
+import { Camera } from "./rendering/camera";
 import { Mesh } from "./rendering/mesh";
 import { Renderer } from "./rendering/renderer";
 
@@ -5,6 +6,7 @@ export class VisArch{
     private _renderer: Renderer;
     
     private _mesh: Mesh = new Mesh();
+    private _camera: Camera = new Camera();
 
     public constructor() {
         this._renderer = new Renderer("render-context");
@@ -33,6 +35,7 @@ export class VisArch{
         );
 
         this._mesh.scale = [0.5, 0.5, 0.5];
+        this._camera.position = [0, 1, 2];
         this.update();
     }
 
@@ -46,7 +49,7 @@ export class VisArch{
 
         this._mesh.rotation[1] += 0.01;
     
-        this._renderer.draw(this._mesh);
+        this._renderer.draw(this._mesh, this._camera);
         requestAnimationFrame(this.update.bind( this ));
     }
 }
