@@ -7,7 +7,6 @@ export let gl: WebGL2RenderingContext;
 export class Renderer
 {
     private _canvas: HTMLCanvasElement;
-
     private _shader: Shader;
 
     public constructor(canvasID: string) {
@@ -47,6 +46,10 @@ export class Renderer
         this._shader.setUniform("u_model", 'Matrix4fv', mesh.transform.modelMatrix);
         this._shader.setUniform("u_viewProjection", 'Matrix4fv', camera.getProjectionViewMatrix());
         mesh.draw();
+    }
+
+    public get canvas(): HTMLCanvasElement {
+        return this._canvas;
     }
 
 }
