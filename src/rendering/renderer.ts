@@ -1,4 +1,4 @@
-import { Camera } from "./camera";
+import { Camera } from "./cameras/camera";
 import { Mesh } from "./mesh";
 import { Shader } from "./shaders/shader";
 

@@ -1,5 +1,6 @@
 import { InputManager } from "./input/inputManager";
-import { Camera } from "./rendering/camera";
+import { ArcBallCamera } from "./rendering/cameras/arcBallCamera";
+import { Camera } from "./rendering/cameras/camera";
 import { Mesh } from "./rendering/mesh";
 import { Renderer } from "./rendering/renderer";
 
@@ -8,7 +9,7 @@ export class VisArch{
     private _input: InputManager;
     
     private _mesh: Mesh = new Mesh();
-    private _camera: Camera = new Camera(800, 600, 45);
+    private _camera: ArcBallCamera = new ArcBallCamera(800, 600, 45);
 
     public constructor() {
         this._input = new InputManager();
@@ -68,17 +69,14 @@ export class VisArch{
         if(this._input.isKeyDown("KeyE"))
             this._mesh.position[1] += 0.01;
 
+        if(this._input.isMouseButtonPressed('Left'))
+            this._camera.rotate(this._input.getMouseSpeed()[0] * 0.01, this._input.getMouseSpeed()[1] * 0.01);
+
         if(this._input.isKeyDown("ArrowUp"))
-            this._camera.position[2] -= 0.01;
-        
+            this._camera.zoom(-0.025);
+
         if(this._input.isKeyDown("ArrowDown"))
-            this._camera.position[2] += 0.01;
-
-        if(this._input.isKeyDown("ArrowLeft"))
-            this._camera.position[0] -= 0.01;
-
-        if(this._input.isKeyDown("ArrowRight"))
-            this._camera.position[0] += 0.01;
+            this._camera.zoom(0.025);
     
         this._renderer.draw(this._mesh, this._camera);
         requestAnimationFrame(this.update.bind( this ));
