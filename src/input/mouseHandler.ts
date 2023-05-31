@@ -4,6 +4,7 @@ export class MouseHandler
 {
     private static _mousePosition: number[] = [];
     private static _mouseSpeed: number[] = [];
+    private static _mouseWheel: number = 0;
 
     private static _pressedButtons: boolean[];
 
@@ -43,6 +44,11 @@ export class MouseHandler
         MouseHandler._mouseSpeed[1] = y_speed;
     }
 
+    public static onMouseWheel(deltaY: number) {
+        MouseHandler._mouseWheel = deltaY;
+    }
+
     public static get mousePosition(): number[] { return MouseHandler._mousePosition; }
     public static get mouseSpeed(): number[] { return MouseHandler._mouseSpeed; }
+    public static get mouseWheel(): number { return MouseHandler._mouseWheel; }
 }

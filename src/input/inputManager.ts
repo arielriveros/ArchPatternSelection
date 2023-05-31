@@ -23,6 +23,8 @@ export class InputManager {
         context.addEventListener("contextmenu", this.mouseRightClick, false); // Disable context menu on body if right mouse button is clicked
         context.addEventListener("mousemove", this.mouseMove, false);
 
+        context.addEventListener("wheel", this.mouseWheel, false);
+
         console.log("Input poller initialized");
     }
 
@@ -57,6 +59,11 @@ export class InputManager {
         MouseHandler.onMouseMove(event.clientX, event.clientY, event.movementX, event.movementY);
     }
 
+    private mouseWheel(event: WheelEvent): void {
+        event.preventDefault();
+        MouseHandler.onMouseWheel(event.deltaY);
+    }
+
     public isMouseButtonPressed(button: string): boolean {
         return MouseHandler.isButtonPressed(button);
     }
@@ -75,5 +82,9 @@ export class InputManager {
 
     public isMouseMoving(): boolean {
         return MouseHandler.mouseSpeed[0] != 0 || MouseHandler.mouseSpeed[1] != 0;
+    }
+
+    public getMouseWheel(): number {
+        return MouseHandler.mouseWheel;
     }
 }

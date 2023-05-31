@@ -6,8 +6,10 @@ export class ArcBallCamera extends Camera
     private _cameraPitch: number = 0;
     private _cameraDistance: number = 1;
 
-    public constructor(width: number, height: number, fov: number, near: number = 0.1, far: number = 100) {
+    public constructor(distance: number, width: number, height: number, fov: number, near: number = 0.1, far: number = 100) {
         super(width, height, fov, near, far);
+        this._cameraDistance = distance;
+        this.move();
     }
 
     public zoom(deltaDistance: number) {
@@ -18,7 +20,8 @@ export class ArcBallCamera extends Camera
 
     public rotate(deltaYaw: number, deltaPitch: number): void {
         this._cameraYaw += deltaYaw;
-        this._cameraPitch += deltaPitch;
+        if(this._cameraPitch + deltaPitch < Math.PI / 2 && this._cameraPitch + deltaPitch > -Math.PI / 2)
+            this._cameraPitch += deltaPitch;
         this.move();
     }
 

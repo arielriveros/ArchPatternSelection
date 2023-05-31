@@ -1,6 +1,5 @@
 import { InputManager } from "./input/inputManager";
 import { ArcBallCamera } from "./rendering/cameras/arcBallCamera";
-import { Camera } from "./rendering/cameras/camera";
 import { Mesh } from "./rendering/mesh";
 import { Renderer } from "./rendering/renderer";
 
@@ -9,7 +8,7 @@ export class VisArch{
     private _input: InputManager;
     
     private _mesh: Mesh = new Mesh();
-    private _camera: ArcBallCamera = new ArcBallCamera(800, 600, 45);
+    private _camera: ArcBallCamera = new ArcBallCamera(1, 800, 600, 45);
 
     public constructor() {
         this._input = new InputManager();
@@ -39,7 +38,6 @@ export class VisArch{
         );
 
         this._mesh.scale = [0.5, 0.5, 0.5];
-        this._camera.position = [0, 0, 2];
 
         this.resize();
         this.update();
